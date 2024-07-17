@@ -8,12 +8,16 @@
 import UIKit
 
 class ViewController: UIViewController {
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
     }
-
-
+    
+    
+    @IBAction func registerButtonTapped(_ sender: UIButton) {
+        performSegue(withIdentifier: "RegisterSegue", sender: self)
+    }
+    
 }
 
