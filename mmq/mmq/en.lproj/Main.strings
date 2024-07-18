@@ -1,0 +1,75 @@
+
+/* Class = "UIViewController"; title = "StartView Controller"; ObjectID = "2Rq-b7-Wwo"; */
+"2Rq-b7-Wwo.title" = "StartView Controller";
+
+/* Class = "UILabel"; text = "000"; ObjectID = "4N4-EB-XQV"; */
+"4N4-EB-XQV.text" = "000";
+
+/* Class = "UILabel"; text = "00"; ObjectID = "53y-uh-nel"; */
+"53y-uh-nel.text" = "00";
+
+/* Class = "UIButton"; configuration.title = "Jugar"; ObjectID = "6AI-hE-bab"; */
+"6AI-hE-bab.configuration.title" = "Jugar";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "6AI-hE-bab"; */
+"6AI-hE-bab.normalTitle" = "Button";
+
+/* Class = "UILabel"; text = "00"; ObjectID = "6kL-4r-hzx"; */
+"6kL-4r-hzx.text" = "00";
+
+/* Class = "UITextField"; placeholder = "Apellidos"; ObjectID = "8rz-jY-Txd"; */
+"8rz-jY-Txd.placeholder" = "Apellidos";
+
+/* Class = "UILabel"; text = "Nombre"; ObjectID = "9Cd-zM-gQQ"; */
+"9Cd-zM-gQQ.text" = "Nombre";
+
+/* Class = "UIButton"; configuration.title = "Registrar"; ObjectID = "BCl-oS-u8k"; */
+"BCl-oS-u8k.configuration.title" = "Registrar";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "BCl-oS-u8k"; */
+"BCl-oS-u8k.normalTitle" = "Button";
+
+/* Class = "UILabel"; text = "Correo electrónico"; ObjectID = "CAT-Pa-DNe"; */
+"CAT-Pa-DNe.text" = "Correo electrónico";
+
+/* Class = "UIViewController"; title = "RegisterView Controller"; ObjectID = "Ey0-hd-LjO"; */
+"Ey0-hd-LjO.title" = "RegisterView Controller";
+
+/* Class = "UILabel"; text = "Apellidos"; ObjectID = "GR0-65-gJY"; */
+"GR0-65-gJY.text" = "Apellidos";
+
+/* Class = "UIButton"; configuration.title = "Iniciar Sesión"; ObjectID = "MFz-Lc-Awt"; */
+"MFz-Lc-Awt.configuration.title" = "Iniciar Sesión";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "MFz-Lc-Awt"; */
+"MFz-Lc-Awt.normalTitle" = "Button";
+
+/* Class = "UITextField"; placeholder = "Nombre"; ObjectID = "PM1-XY-lCu"; */
+"PM1-XY-lCu.placeholder" = "Nombre";
+
+/* Class = "UITextField"; placeholder = "Contraseña"; ObjectID = "QJL-wN-rY8"; */
+"QJL-wN-rY8.placeholder" = "Contraseña";
+
+/* Class = "UITextField"; placeholder = "Correo electrónico"; ObjectID = "VVj-4m-KGa"; */
+"VVj-4m-KGa.placeholder" = "Correo electrónico";
+
+/* Class = "UILabel"; text = "00"; ObjectID = "aEt-3Q-jSb"; */
+"aEt-3Q-jSb.text" = "00";
+
+/* Class = "UIButton"; configuration.title = "Registrarse"; ObjectID = "k9Z-ov-Imi"; */
+"k9Z-ov-Imi.configuration.title" = "Registrarse";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "k9Z-ov-Imi"; */
+"k9Z-ov-Imi.normalTitle" = "Button";
+
+/* Class = "UILabel"; text = "Registro"; ObjectID = "v8j-8d-lgX"; */
+"v8j-8d-lgX.text" = "Registro";
+
+/* Class = "UILabel"; text = "Contraseña"; ObjectID = "wHE-3u-gy6"; */
+"wHE-3u-gy6.text" = "Contraseña";
+
+/* Class = "UIViewController"; title = "MapView Controller"; ObjectID = "ykl-Cu-rZT"; */
+"ykl-Cu-rZT.title" = "MapView Controller";
+
+/* Class = "UIViewController"; title = "LogInView Controller"; ObjectID = "z5r-Kf-cTA"; */
+"z5r-Kf-cTA.title" = "LogInView Controller";
