@@ -19,5 +19,11 @@ class ViewController: UIViewController {
         performSegue(withIdentifier: "RegisterSegue", sender: self)
     }
     
+    @IBAction func logInButtonTapped(_ sender: UIButton) {
+        performSegue(withIdentifier: "LogInSegue", sender: self)
+    }
+    
+    
+    
 }
 
