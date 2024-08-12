@@ -25,20 +25,8 @@ class SignUpController: UIViewController{
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        // Do any additional setup after loading the view.
+
     }
-    
-    
-    /*
-        // MARK: - Navigation
-        
-        // In a storyboard-based application, you will often want to do a little preparation before navigation
-        override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     // Get the new view controller using segue.destination.
-     // Pass the selected object to the new view controller.
-     }
-     */
     
     @IBAction func signUpBtn(_ sender: Any) {
         
@@ -61,10 +49,10 @@ class SignUpController: UIViewController{
             return
         }
         let puntos = 0
-        let monedas = 0
-        let c1 = 0
-        let c2 = 0
-        let c3 = 0
+        let monedas = 100
+        let c1 = 3
+        let c2 = 3
+        let c3 = 3
         
         Auth.auth().createUser(withEmail: correo, password: password){ (result, error) in
             if let error = error as NSError? {
