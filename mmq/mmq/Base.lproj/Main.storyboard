@@ -760,11 +760,12 @@
                         <outlet property="mapBtn" destination="Jlx-Zf-huq" id="Und-3k-fAO"/>
                         <outlet property="tiendaBtn" destination="igq-mf-grm" id="o20-cf-Uyf"/>
                         <segue destination="7rv-aw-7fW" kind="show" identifier="LevelsSegue" id="cbD-kI-50l"/>
+                        <segue destination="DHz-hL-53f" kind="presentation" id="6qM-CP-XaI"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5W2-G7-EOp" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2175" y="605"/>
+            <point key="canvasLocation" x="2175" y="619"/>
         </scene>
         <!--LevelsView Controller-->
         <scene sceneID="AhH-4u-ZNz">
@@ -1637,12 +1638,6 @@
                                 </items>
                                 <color key="barTintColor" red="0.043137254899999998" green="0.090196078430000007" blue="0.25490196079999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                             </toolbar>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="MI PERFIL" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HOm-Lb-z8g">
-                                <rect key="frame" x="110" y="59" width="173" height="38.333333333333343"/>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="32"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="22" translatesAutoresizingMaskIntoConstraints="NO" id="fEB-6c-RxA">
                                 <rect key="frame" x="110.33333333333333" y="474" width="172.66666666666669" height="301"/>
                                 <subviews>
@@ -1696,6 +1691,12 @@
                                     <constraint firstAttribute="height" constant="39" id="xl7-Cx-8KP"/>
                                 </constraints>
                             </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="MI PERFIL" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HOm-Lb-z8g">
+                                <rect key="frame" x="110" y="55" width="173" height="38.333333333333336"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="32"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="Sy8-W8-ogb"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -1705,7 +1706,7 @@
                             <constraint firstItem="QNX-DB-uNc" firstAttribute="top" secondItem="iq1-Wd-piR" secondAttribute="top" constant="214" id="3ce-b8-nBb"/>
                             <constraint firstItem="sTM-Jp-qgj" firstAttribute="trailing" secondItem="QNX-DB-uNc" secondAttribute="trailing" id="9uo-UL-xpz"/>
                             <constraint firstItem="sTM-Jp-qgj" firstAttribute="bottom" secondItem="QNX-DB-uNc" secondAttribute="bottom" id="ECE-yU-pd6"/>
-                            <constraint firstItem="HOm-Lb-z8g" firstAttribute="top" secondItem="Sy8-W8-ogb" secondAttribute="top" id="TBW-VI-hXe"/>
+                            <constraint firstItem="HOm-Lb-z8g" firstAttribute="top" secondItem="Sy8-W8-ogb" secondAttribute="top" constant="55" id="TBW-VI-hXe"/>
                             <constraint firstItem="sTM-Jp-qgj" firstAttribute="leading" secondItem="Sy8-W8-ogb" secondAttribute="leading" constant="260" id="TjW-qv-oVm"/>
                             <constraint firstItem="QNX-DB-uNc" firstAttribute="centerX" secondItem="fEB-6c-RxA" secondAttribute="centerX" id="Tjr-ov-fuh"/>
                             <constraint firstItem="QNX-DB-uNc" firstAttribute="centerX" secondItem="HOm-Lb-z8g" secondAttribute="centerX" id="a1r-cS-fUp"/>
@@ -1855,10 +1856,10 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="RXn-TJ-PRy"/>
-        <segue reference="el8-rl-jK1"/>
+        <segue reference="L5G-9E-UWp"/>
+        <segue reference="rRq-qg-j8H"/>
         <segue reference="IYy-uV-pWv"/>
-        <segue reference="ETv-WP-2wy"/>
+        <segue reference="nuY-21-Cs5"/>
         <segue reference="Mt6-Vz-Ixl"/>
         <segue reference="OEF-qU-4yI"/>
     </inferredMetricsTieBreakers>
