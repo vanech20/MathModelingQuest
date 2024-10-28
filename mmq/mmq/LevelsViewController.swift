@@ -57,6 +57,11 @@ class LevelsViewController: UIViewController {
         if let loginVC = storyboard.instantiateViewController(withIdentifier: "LogInViewController") as? LogInController {
             self.present(loginVC, animated: true, completion: nil)
         }
+        
+        // Set up back button action
+        //backBtn.action = #selector(backButtonTapped)
+        
+        getData()
     }
     
     @objc func level1Tapped() {
@@ -79,8 +84,10 @@ class LevelsViewController: UIViewController {
     
     @objc func backButtonTapped() {
         if let navigationController = self.navigationController {
+            // This will pop the current view controller from the navigation stack
             navigationController.popViewController(animated: true)
         } else {
+            // Fallback: Present MapController manually if not embedded in a navigation controller
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             if let mapaVC = storyboard.instantiateViewController(withIdentifier: "MapController") as? MapController {
                 self.present(mapaVC, animated: true, completion: nil)
