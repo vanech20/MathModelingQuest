@@ -16,12 +16,9 @@ class LevelsViewController: UIViewController {
     @IBOutlet weak var btnLevel3: UIButton!
     @IBOutlet weak var backBtn: UIBarButtonItem!
     @IBOutlet weak var coinsLbl: UILabel!
-    @IBOutlet weak var coffeeLbl: UILabel!
-    @IBOutlet weak var eraserLbl: UILabel!
-    @IBOutlet weak var candyLbl: UILabel!
     
-    var mAuth: Auth!
-    var db: Firestore!
+    var mAuth = Auth.auth()
+    var db = Firestore.firestore()
     var isla: String?
     var base: String?
     var baseP: String?
@@ -29,68 +26,92 @@ class LevelsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        db = Firestore.firestore()
-        mAuth = Auth.auth()
         
-        guard let user = mAuth.currentUser else {
-            // Redirect to login screen if the user is not authenticated
-            let loginVC = storyboard?.instantiateViewController(withIdentifier: "LogInViewController") as! LogInController
-            self.navigationController?.pushViewController(loginVC, animated: true)
+        // Check if the user is authenticated
+        guard let currentUser = mAuth.currentUser else {
+            redirectToLogin()
             return
         }
-        if let receivedIsla = isla, receivedIsla == "I1" {
-            btnLevel3.isHidden = true
+        
+        setupButtons()
+        
+        // Get passed parameters from previous view controller
+        if let receivedIsla = self.isla, base != nil, baseP != nil {
+            configureLevelVisibility(isla: receivedIsla)
         }
-        // Configurar OnClickListeners para los botones de nivel
+        
+        getData(for: currentUser.uid)
+    }
+    
+    private func setupButtons() {
+        backBtn.target = self
+        backBtn.action = #selector(backButtonTapped)
+        
         btnLevel1.addTarget(self, action: #selector(level1Tapped), for: .touchUpInside)
         btnLevel2.addTarget(self, action: #selector(level2Tapped), for: .touchUpInside)
         btnLevel3.addTarget(self, action: #selector(level3Tapped), for: .touchUpInside)
-        
-        getData()
     }
+    
+    private func redirectToLogin() {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        if let loginVC = storyboard.instantiateViewController(withIdentifier: "LogInViewController") as? LogInController {
+            self.present(loginVC, animated: true, completion: nil)
+        }
+    }
+    
     @objc func level1Tapped() {
-            navigateToLevel(level: "L1")
-        }
+        navigateToLevel(level: "L1")
+    }
+    
     @objc func level2Tapped() {
-            navigateToLevel(level: "L2")
-        }
+        navigateToLevel(level: "L2")
+    }
+    
     @objc func level3Tapped() {
-            navigateToLevel(level: "L3")
+        navigateToLevel(level: "L3")
+    }
+    
+    func configureLevelVisibility(isla: String) {
+        if ["I1", "I92", "I5", "I6"].contains(isla) {
+            btnLevel3.isHidden = true
         }
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-            if segue.identifier == "FirstIslandSegue",
-               let destinationVC = segue.destination as? FirstIslandController {
-                destinationVC.isla = isla
-                destinationVC.base = base
-                destinationVC.baseP = baseP
-                destinationVC.level = level
+    }
+    
+    @objc func backButtonTapped() {
+        if let navigationController = self.navigationController {
+            navigationController.popViewController(animated: true)
+        } else {
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            if let mapaVC = storyboard.instantiateViewController(withIdentifier: "MapController") as? MapController {
+                self.present(mapaVC, animated: true, completion: nil)
             }
         }
-    private func navigateToLevel(level: String) {
-            self.level = level
-            performSegue(withIdentifier: "FirstIslandSegue", sender: self)
+    }
+    
+    func navigateToLevel(level: String) {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        if let firstIslandVC = storyboard.instantiateViewController(withIdentifier: "FirstIslandViewController") as? FirstIslandController {
+            firstIslandVC.isla = self.isla
+            firstIslandVC.base = self.base
+            firstIslandVC.baseP = self.baseP
+            firstIslandVC.level = level  // Pass the selected level here
+            self.present(firstIslandVC, animated: true, completion: nil)
         }
-    private func getData() {
-        guard let user = mAuth.currentUser else { return }
-        let userId = user.uid
-        db.collection("Usuario").document(userId)
-            .addSnapshotListener { [weak self] (snapshot, error) in
-                guard let self = self else { return }
-                if let error = error {
-                    print("Listen failed: \(error)")
-                    return
-                }
-                
-                if let snapshot = snapshot, snapshot.exists {
-                    let data = snapshot.data()
-                    self.coinsLbl.text = "\(data?["monedas"] as? Int ?? 0)"
-                    self.coffeeLbl.text = "\(data?["c1"] as? Int ?? 0)"
-                    self.eraserLbl.text = "\(data?["c2"] as? Int ?? 0)"
-                    self.candyLbl.text = "\(data?["c3"] as? Int ?? 0)"
-                } else {
-                    print("No data found")
-                }
+    }
+    
+    func getData(for userId: String) {
+        db.collection("Usuario").document(userId).addSnapshotListener { [weak self] snapshot, error in
+            guard let self = self else { return }
+            if let error = error {
+                print("Listen failed: \(error)")
+                return
             }
+            if let snapshot = snapshot, snapshot.exists, let coinsValue = snapshot.get("monedas") as? NSNumber {
+                self.coinsLbl.text = coinsValue.stringValue
+            } else {
+                print("No current data or 'monedas' is not numeric")
+            }
+        }
     }
 }
 

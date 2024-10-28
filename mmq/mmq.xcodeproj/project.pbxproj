@@ -15,6 +15,7 @@
 		E905F0772C897460004F30E9 /* AvatarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E905F0762C897460004F30E9 /* AvatarController.swift */; };
 		E905F0792C898780004F30E9 /* StoreController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E905F0782C898780004F30E9 /* StoreController.swift */; };
 		E905F07B2C89879F004F30E9 /* EditController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E905F07A2C89879F004F30E9 /* EditController.swift */; };
+		E9715EBF2CD037EB00925A58 /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = E9715EBE2CD037EB00925A58 /* FirebaseFirestoreSwift */; };
 		E975C0EE2C479D9900DDB901 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E975C0ED2C479D9900DDB901 /* GoogleService-Info.plist */; };
 		E975C0F32C479EFA00DDB901 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = E975C0F22C479EFA00DDB901 /* FirebaseAuth */; };
 		E975C0F72C479EFA00DDB901 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = E975C0F62C479EFA00DDB901 /* FirebaseFirestore */; };
@@ -84,6 +85,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E9715EBF2CD037EB00925A58 /* FirebaseFirestoreSwift in Frameworks */,
 				E975C0F72C479EFA00DDB901 /* FirebaseFirestore in Frameworks */,
 				E975C0F32C479EFA00DDB901 /* FirebaseAuth in Frameworks */,
 				E905F0752C861BB0004F30E9 /* SDWebImage in Frameworks */,
@@ -200,6 +202,7 @@
 				E975C0F62C479EFA00DDB901 /* FirebaseFirestore */,
 				E905F0712C8618BF004F30E9 /* FirebaseStorage */,
 				E905F0742C861BB0004F30E9 /* SDWebImage */,
+				E9715EBE2CD037EB00925A58 /* FirebaseFirestoreSwift */,
 			);
 			productName = mmq;
 			productReference = E9DD00E82C123A8C00CCC016 /* mmq.app */;
@@ -514,9 +517,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 2Y952PY2V9;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = A542FSX323;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = mmq/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -529,8 +535,10 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = mx.tec.appstecpuebla;
+				PRODUCT_BUNDLE_IDENTIFIER = mx.tec.mathmq;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "Math Modelation Quest";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -542,9 +550,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 2Y952PY2V9;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = A542FSX323;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = mmq/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -557,8 +568,10 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = mx.tec.appstecpuebla;
+				PRODUCT_BUNDLE_IDENTIFIER = mx.tec.mathmq;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "Math Modelation Quest";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -711,6 +724,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = E905F0732C861BB0004F30E9 /* XCRemoteSwiftPackageReference "SDWebImage" */;
 			productName = SDWebImage;
+		};
+		E9715EBE2CD037EB00925A58 /* FirebaseFirestoreSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E975C0EF2C479EFA00DDB901 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestoreSwift;
 		};
 		E975C0F22C479EFA00DDB901 /* FirebaseAuth */ = {
 			isa = XCSwiftPackageProductDependency;

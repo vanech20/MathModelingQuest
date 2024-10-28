@@ -1,19 +1,10 @@
-//
-//  FirstIslandController.swift
-//  mmq
-//
-//
-
 import UIKit
 import FirebaseAuth
 import FirebaseFirestore
 
 class FirstIslandController: UIViewController {
     
-    @IBOutlet weak var coinsLbl: UILabel!
-    @IBOutlet weak var coffeeLbl: UILabel!
-    @IBOutlet weak var eraserLbl: UILabel!
-    @IBOutlet weak var candyLbl: UILabel!
+    @IBOutlet weak var coins: UILabel!
     @IBOutlet weak var pregunta1: UIImageView!
     @IBOutlet weak var pregunta2: UIImageView!
     @IBOutlet weak var pregunta3: UIImageView!
@@ -24,10 +15,11 @@ class FirstIslandController: UIViewController {
     @IBOutlet weak var pregunta8: UIImageView!
     @IBOutlet weak var pregunta9: UIImageView!
     @IBOutlet weak var pregunta10: UIImageView!
+    @IBOutlet weak var backBtn: UIBarButtonItem!
     
-    var db: Firestore!
-    var mAuth: Auth!
-    var buttonToImageViewMap = [String: UIImageView]()
+    private var db = Firestore.firestore()
+    private var mAuth = Auth.auth()
+    private var buttonToImageViewMap = [String: UIImageView]()
     
     var isla: String?
     var base: String?
@@ -37,143 +29,142 @@ class FirstIslandController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        mAuth = Auth.auth()
-        db = Firestore.firestore()
+        // Set up back button action
+        backBtn.target = self
+        backBtn.action = #selector(didTapBackButton)
         
-        if let user = mAuth.currentUser {
-            let userId = user.uid
-            print("Usuario ID: \(userId)")
-        } else {
-            print("Usuario no autenticado")
-            let sesionVC = storyboard?.instantiateViewController(withIdentifier: "LogInViewController") as! LogInController
-            navigationController?.pushViewController(sesionVC, animated: true)
-            return
-        }
-        if let intent = navigationController?.viewControllers.last as? QuestionController {
-            isla = intent.isla
-            base = intent.base
-            baseP = intent.baseP
-            level = intent.level
-        }
+        // Initialize button to ImageView mapping
         initializeButtonToImageViewMap()
         
-        pregunta1.isUserInteractionEnabled = true
-        pregunta1.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleQuestionTap(_:))))
+        // Retrieve intent parameters
+        if let params = navigationController?.viewControllers.first as? LevelsViewController {
+            isla = params.isla
+            base = params.base
+            baseP = params.baseP
+            level = params.level
+        }
         
-        pregunta2.isUserInteractionEnabled = true
-        pregunta2.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleQuestionTap(_:))))
+        // Check if user is authenticated
+        if let user = mAuth.currentUser {
+            print("User ID: \(user.uid)")
+        } else {
+            print("User not authenticated")
+            let sesionVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(identifier: "MapViewController")
+            self.present(sesionVC, animated: true, completion: nil)
+            return
+        }
         
-        pregunta3.isUserInteractionEnabled = true
-        pregunta3.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleQuestionTap(_:))))
-        
-        pregunta4.isUserInteractionEnabled = true
-        pregunta4.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleQuestionTap(_:))))
-        
-        pregunta5.isUserInteractionEnabled = true
-        pregunta5.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleQuestionTap(_:))))
-        
-        pregunta6.isUserInteractionEnabled = true
-        pregunta6.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleQuestionTap(_:))))
-        
-        pregunta7.isUserInteractionEnabled = true
-        pregunta7.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleQuestionTap(_:))))
-        
-        pregunta8.isUserInteractionEnabled = true
-        pregunta8.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleQuestionTap(_:))))
-        
-        pregunta9.isUserInteractionEnabled = true
-        pregunta9.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleQuestionTap(_:))))
-        
-        pregunta10.isUserInteractionEnabled = true
-        pregunta10.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleQuestionTap(_:))))
+        // Set up tap gestures for ImageViews
+        setupTapGestures()
         
         verificarAvance()
         getData()
-        print("LevelTag: \(level ?? "")")
+        setBackground(for: level)
     }
-    @objc func handleQuestionTap(_ sender: UITapGestureRecognizer) {
-            guard let questionTag = sender.view?.tag else { return }
-            let intent = QuestionController()
-            intent.isla = "\(baseP ?? "")\(level ?? "")"
-            intent.question = "R\(questionTag)\(isla ?? "")\(level ?? "")"
-            intent.estado = base
-            navigationController?.pushViewController(intent, animated: true)
+    
+    @objc func didTapBackButton() {
+        navigationController?.popViewController(animated: true)
+    }
+    
+    private func setupTapGestures() {
+        [pregunta1, pregunta2, pregunta3, pregunta4, pregunta5,
+         pregunta6, pregunta7, pregunta8, pregunta9, pregunta10].enumerated().forEach { index, imageView in
+            let tapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapPregunta(_:)))
+            imageView?.isUserInteractionEnabled = true
+            imageView?.tag = index + 1
+            imageView?.addGestureRecognizer(tapGesture)
         }
+    }
+    
+    @objc func didTapPregunta(_ sender: UITapGestureRecognizer) {
+        guard let imageView = sender.view else { return }
+        let preguntaIndex = imageView.tag
+        guard let baseP = baseP, let nivel = level, let isla = isla, let base = base else { return }
+        
+        let preguntaActivity = storyboard?.instantiateViewController(identifier: "QuestionViewController") as! QuestionController
+        preguntaActivity.isla = baseP + nivel
+        preguntaActivity.question = "R\(preguntaIndex)\(isla)\(nivel)"
+        preguntaActivity.estado = base
+        navigationController?.pushViewController(preguntaActivity, animated: true)
+    }
     
     private func initializeButtonToImageViewMap() {
-            buttonToImageViewMap["R1\(isla ?? "")\(level ?? "")"] = pregunta1
-            buttonToImageViewMap["R2\(isla ?? "")\(level ?? "")"] = pregunta2
-            buttonToImageViewMap["R3\(isla ?? "")\(level ?? "")"] = pregunta3
-            buttonToImageViewMap["R4\(isla ?? "")\(level ?? "")"] = pregunta4
-            buttonToImageViewMap["R5\(isla ?? "")\(level ?? "")"] = pregunta5
-            buttonToImageViewMap["R6\(isla ?? "")\(level ?? "")"] = pregunta6
-            buttonToImageViewMap["R7\(isla ?? "")\(level ?? "")"] = pregunta7
-            buttonToImageViewMap["R8\(isla ?? "")\(level ?? "")"] = pregunta8
-            buttonToImageViewMap["R9\(isla ?? "")\(level ?? "")"] = pregunta9
-            buttonToImageViewMap["R10\(isla ?? "")\(level ?? "")"] = pregunta10
-        }
-    
-    private func verificarAvance(){
-        if let user = mAuth.currentUser{
-            let userId = user.uid
-            let userDocRef = db.collection(base ?? "").document(userId)
-            
-            userDocRef.addSnapshotListener{(documentSnapshot, error) in
-                if let error = error {
-                    print ("Error al obtener el documento: \(error)")
-                    return
-                }
-                if let documentSnapshot = documentSnapshot, documentSnapshot.exists{
-                    if let userData = documentSnapshot.data() {
-                        self.actualizarEstadoBotones(userData)
-                    }
-                } else {
-                    print("El documento no existe.")
-                }
-            }
-        } else {
-            print("Usuario no autenticado")
-        }
+        guard let isla = isla, let nivel = level else { return }
+        buttonToImageViewMap = [
+            "R1\(isla)\(nivel)": pregunta1,
+            "R2\(isla)\(nivel)": pregunta2,
+            "R3\(isla)\(nivel)": pregunta3,
+            "R4\(isla)\(nivel)": pregunta4,
+            "R5\(isla)\(nivel)": pregunta5,
+            "R6\(isla)\(nivel)": pregunta6,
+            "R7\(isla)\(nivel)": pregunta7,
+            "R8\(isla)\(nivel)": pregunta8,
+            "R9\(isla)\(nivel)": pregunta9,
+            "R10\(isla)\(nivel)": pregunta10
+        ]
     }
     
-    private func actualizarEstadoBotones(_ userData: [String: Any]){
+    private func actualizarEstadoBotones(_ userData: [String: Any]) {
         var estadoAnterior = true
         for i in 1...10 {
-            let questionKey = "R\(i)\(isla ?? "")\(level ?? "")"
-            
-            if let preguntaImageView = buttonToImageViewMap[questionKey]{
-                if let estado = userData[questionKey] as? Bool {
-                    preguntaImageView.isUserInteractionEnabled = estadoAnterior
+            let preguntaKey = "R\(i)\(isla ?? "")\(level ?? "")"
+            if let pregunta = buttonToImageViewMap[preguntaKey] {
+                if let estado = userData[preguntaKey] as? Bool {
+                    pregunta.isUserInteractionEnabled = estadoAnterior
                     estadoAnterior = estado
                 } else {
-                    preguntaImageView.isUserInteractionEnabled = false
+                    pregunta.isUserInteractionEnabled = false
                 }
             }
         }
     }
     
-    private func getData(){
-        if let user = mAuth.currentUser {
-            let userId = user.uid
-            db.collection("Usuario").document(userId).addSnapshotListener{ (snapshot, error) in
-                if let error = error {
-                    print("Listen failed: \(error)")
-                    return
-                }
-                if let snapshot = snapshot, snapshot.exists{
-                    let coinsValue = snapshot.data()?["monedas"] as? Int ?? 0
-                    let c1Value = snapshot.data()?["c1"] as? Int ?? 0
-                    let c2Value = snapshot.data()?["c2"] as? Int ?? 0
-                    let c3Value = snapshot.data()?["c3"] as? Int ?? 0
-                    
-                    self.coinsLbl.text = "\(coinsValue)"
-                    self.coffeeLbl.text = "\(c1Value)"
-                    self.eraserLbl.text = "\(c2Value)"
-                    self.candyLbl.text = "\(c3Value)"
-                } else {
-                    print("No hay datos actuales (snapshot es null o no existe)")
+    private func verificarAvance() {
+        guard let user = mAuth.currentUser else {
+            print("User not authenticated")
+            return
+        }
+        
+        db.collection(base ?? "").document(user.uid).addSnapshotListener { snapshot, error in
+            if let error = error {
+                print("Error retrieving document: \(error)")
+                return
+            }
+            guard let data = snapshot?.data() else {
+                print("No document data available.")
+                return
+            }
+            self.actualizarEstadoBotones(data)
+            for (key, value) in data {
+                if let estado = value as? Bool, estado, let imageView = self.buttonToImageViewMap[key] {
+                    imageView.image = UIImage(named: "green")
                 }
             }
+        }
+    }
+    
+    private func getData() {
+        guard let user = mAuth.currentUser else { return }
+        
+        db.collection("Usuario").document(user.uid).addSnapshotListener { snapshot, error in
+            if let error = error {
+                print("Firestore error: \(error)")
+                return
+            }
+            if let coinsValue = snapshot?.data()?["monedas"] as? Int {
+                self.coins.text = "\(coinsValue)"
+            }
+        }
+    }
+    
+    private func setBackground(for nivel: String?) {
+        switch nivel {
+        case "L1":
+            view.backgroundColor = UIColor(patternImage: UIImage(named: "Back1")!)
+        case "L2":
+            view.backgroundColor = UIColor(patternImage: UIImage(named: "Back2")!)
+        default:
+            view.backgroundColor = UIColor(patternImage: UIImage(named: "Back3")!)
         }
     }
 }
