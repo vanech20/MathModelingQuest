@@ -19,19 +19,7 @@ class LogInController: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
     }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
     
     @IBAction func logInBtn(_ sender: Any) {
         guard let correo = email.text, let password = pass.text else {
@@ -54,11 +42,17 @@ class LogInController: UIViewController, UITextFieldDelegate {
             
             if let error = error {
                 self.displayWarning(message: "Correo y/o contraseña incorrectos.")
-                print("Error al iniciar sesiónA: \(error.localizedDescription)")
+                print("Error al iniciar sesión: \(error.localizedDescription)")
                 return
             }
             
             print("Inicio de sesión exitoso.")
+            if let currentUser = Auth.auth().currentUser{
+                let defaults = UserDefaults.standard
+                defaults.set(currentUser.uid, forKey: "uid")
+                defaults.synchronize()
+                self.performSegue(withIdentifier: "toStartController", sender: self)
+            }
         }
     }
     

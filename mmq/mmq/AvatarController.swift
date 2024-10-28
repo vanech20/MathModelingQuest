@@ -55,6 +55,12 @@ class AvatarController: UIViewController {
         verificarVestimenta()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        // Refresh the avatar images when the view appears
+        verificarVestimenta()
+    }
+    
     @objc func editAvatar() {
             performSegue(withIdentifier: "EditSegue", sender: self)
         }
@@ -68,34 +74,30 @@ class AvatarController: UIViewController {
         }
     
     func verificarVestimenta() {
-        if let user = mAuth.currentUser {
-            let userId = user.uid
-            let userDocRef = db.collection("UsuarioAvatar").document(userId)
-            
-            userDocRef.addSnapshotListener { document, error in
-                if let error = error {
-                    print("Error getting document: \(error)")
-                    return
-                }
-                
-                if let document = document, document.exists {
-                    let userData = document.data()
-                    
-                    let actualFace = userData?["actualFace"] as? String
-                    let actualFeet = userData?["actualFeet"] as? String
-                    let actualHead = userData?["actualHead"] as? String
-                    let actualNeck = userData?["actualNeck"] as? String
-                    
-                    self.setImageViewResource(imageName: actualFace, imageView: self.actualFace)
-                    self.setImageViewResource(imageName: actualFeet, imageView: self.actualFeet)
-                    self.setImageViewResource(imageName: actualHead, imageView: self.actualHead)
-                    self.setImageViewResource(imageName: actualNeck, imageView: self.actualNeck)
-                } else {
-                    print("Document does not exist")
-                }
+        guard let user = mAuth.currentUser else { return }
+        let userId = user.uid
+        let userDocRef = db.collection("UsuarioAvatar").document(userId)
+        
+        // Use snapshot listener to listen for real-time updates
+        userDocRef.addSnapshotListener { document, error in
+            if let error = error {
+                print("Error getting document: \(error)")
+                return
             }
-        } else {
-            print("User not authenticated")
+            
+            if let document = document, document.exists, let userData = document.data() {
+                let actualFace = userData["actualFace"] as? String
+                let actualFeet = userData["actualFeet"] as? String
+                let actualHead = userData["actualHead"] as? String
+                let actualNeck = userData["actualNeck"] as? String
+                
+                self.setImageViewResource(imageName: actualFace, imageView: self.actualFace)
+                self.setImageViewResource(imageName: actualFeet, imageView: self.actualFeet)
+                self.setImageViewResource(imageName: actualHead, imageView: self.actualHead)
+                self.setImageViewResource(imageName: actualNeck, imageView: self.actualNeck)
+            } else {
+                print("Document does not exist")
+            }
         }
     }
         
@@ -112,21 +114,21 @@ class AvatarController: UIViewController {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-            if segue.identifier == "goToMapSegue" {
-                // Pass data to MapaViewController if needed
-                if let destinationVC = segue.destination as? MapController {
-                    // destinationVC.someProperty = someValue
-                }
-            } else if segue.identifier == "goToShopSegue" {
-                // Pass data to TiendaViewController if needed
-                if let destinationVC = segue.destination as? StoreController {
-                    // destinationVC.someProperty = someValue
-                }
-            } else if segue.identifier == "editAvatarSegue" {
-                // Pass data to EditarViewController if needed
-                if let destinationVC = segue.destination as? EditController {
-                    // destinationVC.someProperty = someValue
-                }
+        if segue.identifier == "goToMapSegue" {
+            // Pass data to MapaViewController if needed
+            if let destinationVC = segue.destination as? MapController {
+                // destinationVC.someProperty = someValue
+            }
+        } else if segue.identifier == "goToShopSegue" {
+            // Pass data to TiendaViewController if needed
+            if let destinationVC = segue.destination as? StoreController {
+                // destinationVC.someProperty = someValue
+            }
+        } else if segue.identifier == "editAvatarSegue" {
+            // Pass data to EditarViewController if needed
+            if let destinationVC = segue.destination as? EditController {
+                // destinationVC.someProperty = someValue
             }
         }
+    }
 }

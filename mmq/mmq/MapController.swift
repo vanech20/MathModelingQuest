@@ -26,9 +26,6 @@ class MapController: UIViewController {
     @IBOutlet weak var avatarBtn: UIButton!
     @IBOutlet weak var tiendaBtn: UIButton!
     
-    @IBOutlet weak var coffeeLbl: UILabel!
-    @IBOutlet weak var eraserLbl: UILabel!
-    @IBOutlet weak var candyLbl: UILabel!
     @IBOutlet weak var coinsLbl: UILabel!
     
     @IBOutlet weak var isla82: UIButton!
@@ -57,55 +54,58 @@ class MapController: UIViewController {
     }
     
     private func setupUI() {
-            tiendaBtn.addTarget(self, action: #selector(tiendaBtnTapped), for: .touchUpInside)
-            avatarBtn.addTarget(self, action: #selector(avatarBtnTapped), for: .touchUpInside)
+        tiendaBtn.addTarget(self, action: #selector(tiendaBtnTapped), for: .touchUpInside)
+        avatarBtn.addTarget(self, action: #selector(avatarBtnTapped), for: .touchUpInside)
         let islandButtons = [isla1, isla2, isla3, isla4, isla5, isla6, isla7, isla8, isla9, isla10]
-                for button in islandButtons {
-                    button?.addTarget(self, action: #selector(islandButtonTapped(_:)), for: .touchUpInside)
-                }
-                
-                extraLevelsBtn.addTarget(self, action: #selector(toggleExtraLevels), for: .touchUpInside)
+        for button in islandButtons {
+            button?.addTarget(self, action: #selector(islandButtonTapped(_:)), for: .touchUpInside)
+        }
+        
+        extraLevelsBtn.addTarget(self, action: #selector(toggleExtraLevels), for: .touchUpInside)
         // Ocultar los botones de niveles extra al inicio
-                let extraIslands = [isla82, isla83, isla92, isla102]
-                extraIslands.forEach { $0?.isHidden = true }
+        let extraIslands = [isla82, isla83, isla92, isla102]
+        extraIslands.forEach { $0?.isHidden = true }
+        for button in extraIslands {
+            button?.addTarget(self, action: #selector(islandButtonTapped(_:)), for: .touchUpInside)
         }
+    }
 
-        @objc private func tiendaBtnTapped() {
-            performSegue(withIdentifier: "tiendaSegue", sender: self)
-        }
+    @objc private func tiendaBtnTapped() {
+        performSegue(withIdentifier: "tiendaSegue", sender: self)
+    }
 
-        @objc private func avatarBtnTapped() {
-            performSegue(withIdentifier: "AvatarSegue", sender: self)
-        }
+    @objc private func avatarBtnTapped() {
+        performSegue(withIdentifier: "AvatarSegue", sender: self)
+    }
 
-        @objc private func profileImageTapped() {
-            performSegue(withIdentifier: "ProfileSegue", sender: self)
-        }
+    @objc private func profileImageTapped() {
+        performSegue(withIdentifier: "ProfileSegue", sender: self)
+    }
     
-        @objc private func islandButtonTapped(_ sender: UIButton) {
-            let islandIdentifiers = [
-                isla1: ("I1", "UsuarioPrimera", "Primera"),
-                isla2: ("I2", "UsuarioSegunda", "Segunda"),
-                isla3: ("I3", "UsuarioTercera", "Tercera"),
-                isla4: ("I4", "UsuarioCuarta", "Cuarta"),
-                isla5: ("I5", "UsuarioQuinta", "Quinta"),
-                isla6: ("I6", "UsuarioSexta", "Sexta"),
-                isla7: ("I7", "UsuarioSeptima", "Septima"),
-                isla8: ("I81", "UsuarioOctava", "Octava1"),
-                isla9: ("I91", "UsuarioNovena", "Novena1"),
-                isla10: ("I101", "UsuarioDecima", "Decima1"),
-                isla82: ("I82", "UsuarioOctava", "Octava2"),
-                isla83: ("I83", "UsuarioOctava", "Octava3"),
-                isla92: ("I92", "UsuarioNovena", "Novena2"),
-                isla102: ("I102", "UsuarioDecima", "Decima2")
-            ]
-            if let (isla, base, baseP) = islandIdentifiers[sender] {
-                print("Navigating to \(isla) with base: \(base), baseP: \(baseP)")
-                performSegue(withIdentifier: "LevelsSegue", sender: (isla, base, baseP))
-            } else {
-                    print("Error: Island not found")
-            }
+    @objc private func islandButtonTapped(_ sender: UIButton) {
+        let islandIdentifiers = [
+            isla1: ("I1", "UsuarioPrimera", "Primera"),
+            isla2: ("I2", "UsuarioSegunda", "Segunda"),
+            isla3: ("I3", "UsuarioTercera", "Tercera"),
+            isla4: ("I4", "UsuarioCuarta", "Cuarta"),
+            isla5: ("I5", "UsuarioQuinta", "Quinta"),
+            isla6: ("I6", "UsuarioSexta", "Sexta"),
+            isla7: ("I7", "UsuarioSeptima", "Septima"),
+            isla8: ("I81", "UsuarioOctava", "Octava1"),
+            isla9: ("I91", "UsuarioNovena", "Novena1"),
+            isla10: ("I101", "UsuarioDecima", "Decima1"),
+            isla82: ("I82", "UsuarioOctava2", "Octava2"),
+            isla83: ("I83", "UsuarioOctava3", "Octava3"),
+            isla92: ("I92", "UsuarioNovena2", "Novena2"),
+            isla102: ("I102", "UsuarioDecima2", "Decima2")
+        ]
+        if let (isla, base, baseP) = islandIdentifiers[sender] {
+            print("Navigating to \(isla) with base: \(base), baseP: \(baseP)")
+            performSegue(withIdentifier: "LevelsSegue", sender: (isla, base, baseP))
+        } else {
+            print("Error: Island not found")
         }
+    }
     @objc private func toggleExtraLevels(){
         let extraIslands = [isla82, isla83, isla92, isla102]
         extraIslands.forEach { $0?.isHidden.toggle() }
@@ -134,15 +134,6 @@ class MapController: UIViewController {
             if let coins = data["monedas"] as? Int {
                 self.coinsLbl.text = "\(coins)"
             }
-            if let c1 = data["c1"] as? Int {
-                self.coffeeLbl.text = "\(c1)"
-            }
-            if let c2 = data["c2"] as? Int {
-                self.eraserLbl.text = "\(c2)"
-            }
-            if let c3 = data["c3"] as? Int {
-                self.candyLbl.text = "\(c3)"
-            }
         }
     }
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -155,7 +146,7 @@ class MapController: UIViewController {
                 destinationVC.base = base
                 destinationVC.baseP = baseP
             } else {
-                        print("Error: Data not in expected format")
+                print("Error: Data not in expected format")
             }
         } else if segue.identifier == "ProfileSegue" {
                 print("Preparing for segue to ProfileViewController")

@@ -38,10 +38,10 @@ class SignUpController: UIViewController{
             displayWarning(message: "Por favor, completa todos los campos.")
             return
         }
-        if !matchRegex(pattern: emailPattern, input: correo) {
+        /*if !matchRegex(pattern: emailPattern, input: correo) {
             displayWarning(message: "Correo institucional inválido")
             return
-        }
+        }*/
         
         if !matchRegex(pattern: passwordPattern, input: password) {
             displayWarning(message: "La contraseña debe tener al menos 8 caracteres, una letra mayúscula, una letra minúscula y un número.")
@@ -49,9 +49,6 @@ class SignUpController: UIViewController{
         }
         let puntos = 0
         let monedas = 100
-        let c1 = 3
-        let c2 = 3
-        let c3 = 3
         
         Auth.auth().createUser(withEmail: correo, password: password){ (result, error) in
             if let error = error as NSError? {
@@ -71,10 +68,7 @@ class SignUpController: UIViewController{
                         "apellidos": apellidos,
                         "correo": correo,
                         "puntos": puntos,
-                        "monedas": monedas,
-                        "c1": c1,
-                        "c2": c2,
-                        "c3": c3
+                        "monedas": monedas
                     ]
                     let db = Firestore.firestore()
                     db.collection("Usuario").document(id).setData(userData) { error in
@@ -94,6 +88,10 @@ class SignUpController: UIViewController{
                         self.createUsuarioOctava(userId: id)
                         self.createUsuarioNovena(userId: id)
                         self.createUsuarioDecima(userId: id)
+                        self.createUsuarioOctava2(userId: id)
+                        self.createUsuarioOctava3(userId: id)
+                        self.createUsuarioNovena2(userId: id)
+                        self.createUsuarioDecima2(userId: id)
                         let alertController = UIAlertController(title: "Registro Completado", message: "El usuario fue registrado correctamente, ya puedes iniciar sesión", preferredStyle: .alert)
                         let okAction = UIAlertAction(title: "Iniciar Sesión", style: .default){ _ in
                             print("Botón OK presionado")
@@ -544,7 +542,7 @@ class SignUpController: UIViewController{
         ]
 
         let db = Firestore.firestore()
-        db.collection("UsuarioOctava").document(userId).setData(avatarMap) { error in
+        db.collection("UsuarioOctava2").document(userId).setData(avatarMap) { error in
             if let error = error {
                 print("Error al guardar octava 2: \(error.localizedDescription)")
                 self.displayWarning(message: "Error al guardar octava 2: \(error.localizedDescription)")
@@ -593,7 +591,7 @@ class SignUpController: UIViewController{
         ]
 
         let db = Firestore.firestore()
-        db.collection("UsuarioOctava").document(userId).setData(avatarMap) { error in
+        db.collection("UsuarioOctava3").document(userId).setData(avatarMap) { error in
             if let error = error {
                 print("Error al guardar octava 3: \(error.localizedDescription)")
                 self.displayWarning(message: "Error al guardar octava 3: \(error.localizedDescription)")
@@ -692,7 +690,7 @@ class SignUpController: UIViewController{
         ]
 
         let db = Firestore.firestore()
-        db.collection("UsuarioNovena").document(userId).setData(avatarMap) { error in
+        db.collection("UsuarioNovena2").document(userId).setData(avatarMap) { error in
             if let error = error {
                 print("Error al guardar novena 2: \(error.localizedDescription)")
                 self.displayWarning(message: "Error al guardar octava 2: \(error.localizedDescription)")
@@ -790,7 +788,7 @@ class SignUpController: UIViewController{
         ]
 
         let db = Firestore.firestore()
-        db.collection("UsuarioDecima").document(userId).setData(avatarMap) { error in
+        db.collection("UsuarioDecima2").document(userId).setData(avatarMap) { error in
             if let error = error {
                 print("Error al guardar decima: \(error.localizedDescription)")
                 self.displayWarning(message: "Error al guardar decima 2: \(error.localizedDescription)")
